@@ -8,11 +8,12 @@ A blazing fast, type-safe REST API boilerplate built with **Fastify**, **Prisma*
 
 - ⚡️ Fastify for high-performance HTTP server
 - 🛡️ Zod schemas for validation + typed routes
-- 🧪 Vitest for testing
+- 🧪 Vitest for testing with unit, integration & validation coverage
 - 📦 Prisma as ORM
 - 🐳 Docker & Docker Compose ready
 - 📜 Swagger/OpenAPI auto-generated docs
 - ✅ ESLint, Prettier, TSConfig for clean code
+- 📊 Structured logging with Pino
 
 ---
 
@@ -32,6 +33,9 @@ user-profile-service/
 │   ├── utils/            # Prisma client, helpers
 │   ├── app.ts            # Fastify app builder
 │   └── main.ts           # App entrypoint
+├── tests/
+│   ├── unit/             # Unit tests for service, controller, logger, validation
+│   └── integration/      # Route integration tests with real app instance
 ├── .env                  # Environment variables
 ├── Dockerfile            # Docker setup
 ├── docker-compose.yml    # Local dev DB + service
@@ -49,7 +53,7 @@ user-profile-service/
 ```bash
 git clone https://github.com/ZeeshanAhmedoff1997/fastify-user-profile-service
 cd user-profile-service
-pnpm install
+npm install
 ```
 
 ### 2. Set Environment
@@ -64,14 +68,14 @@ PORT=3000
 ### 3. Setup Database
 
 ```bash
-pnpm prisma migrate dev --name init
-pnpm prisma generate
+npm prisma migrate dev --name init
+npm prisma generate
 ```
 
 ### 4. Run the Dev Server
 
 ```bash
-pnpm dev
+npm run dev
 ```
 
 Access Swagger UI: [http://localhost:3000/docs](http://localhost:3000/docs)
@@ -81,7 +85,19 @@ Access Swagger UI: [http://localhost:3000/docs](http://localhost:3000/docs)
 ## 🧪 Running Tests
 
 ```bash
-pnpm test
+npm test
+```
+
+This includes:
+
+- ✅ Unit tests for services, controllers, logger, and schema validation
+- ✅ Integration tests for all API routes
+- ✅ Error handling & edge case scenarios
+
+To view test coverage:
+
+```bash
+npm test --coverage
 ```
 
 ---
