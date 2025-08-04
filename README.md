@@ -68,8 +68,8 @@ PORT=3000
 ### 3. Setup Database
 
 ```bash
-npm prisma migrate dev --name init
-npm prisma generate
+npx prisma migrate dev --name init
+npx prisma generate
 ```
 
 ### 4. Run the Dev Server
@@ -97,7 +97,7 @@ This includes:
 To view test coverage:
 
 ```bash
-npm test --coverage
+npm run test -- --coverage
 ```
 
 ---
@@ -107,6 +107,13 @@ npm test --coverage
 ```bash
 docker-compose up --build
 ```
+
+### 🧪 Testing Dockerized Project
+
+- Visit: [http://localhost:3000/docs](http://localhost:3000/docs)
+- Use Swagger UI to test all CRUD operations
+- Optionally run: `docker exec -it fastify_app npm test`
+- Shutdown: `docker-compose down -v`
 
 ---
 
@@ -134,6 +141,29 @@ OpenAPI schema auto-generated from Zod schemas.
 
 ---
 
+## 📐 HTTP Method & Route Design
+
+The API follows RESTful principles:
+
+- **GET** is used for safe, idempotent reads
+- **POST** is used for creating new resources
+- **PUT** is used for full updates of resources
+
+Each route maps cleanly to a `Profile` resource with consistent URI patterns. Using `/profiles/:id` keeps URLs semantic and predictable.
+
+---
+
+## ⚖️ Trade-offs & Assumptions
+
+- Using **Fastify** over Express for speed and type safety
+- **Zod** was chosen for its seamless TypeScript integration and schema-based validation
+- Date validation is done with regex to keep dependencies minimal
+- **Swagger** via `@fastify/swagger` supports API discoverability
+- Assumes developer has Docker installed for DB setup
+- Assumes API consumers expect JSON\:API-like response shapes
+
+---
+
 ## 🙌 Contribution
 
 1. Fork the repo
@@ -141,3 +171,4 @@ OpenAPI schema auto-generated from Zod schemas.
 3. Commit your changes: `git commit -am 'feat: add amazing feature'`
 4. Push to the branch: `git push origin feat/amazing-feature`
 5. Open a PR
+
