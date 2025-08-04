@@ -1,4 +1,4 @@
-version: "3.8"
+version: '3.8'
 
 services:
   app:
@@ -7,21 +7,22 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - '3000:3000'
     env_file:
       - .env.docker
     depends_on:
-      - db
-    volumes:
-      - .:/app:cached
+      db:
+        condition: service_healthy
     command: npm run dev:docker
+    volumes:
+      - .:/app
     restart: unless-stopped
 
   db:
     container_name: postgres_db
     image: postgres:14
     ports:
-      - "5432:5432"
+      - '5432:5432'
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -29,6 +30,10 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     restart: unless-stopped
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-U', 'postgres']
+      interval: 5s
+      retries: 5
 
 volumes:
   pgdata:
