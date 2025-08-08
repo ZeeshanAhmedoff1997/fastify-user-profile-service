@@ -10,7 +10,8 @@
     "format": "prettier --write .",
     "test": "vitest run",
     "test:watch": "vitest --watch",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "dev:docker": "tsx src/main.ts"
   },
   "keywords": [],
   "author": "",

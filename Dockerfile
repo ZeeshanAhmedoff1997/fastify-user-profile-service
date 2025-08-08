@@ -1,36 +1,20 @@
-# ---------- Stage 1: Build ----------
-FROM node:20-slim AS builder
+FROM node:20-slim
 
+# Install OpenSSL
+RUN apt-get update -y && apt-get install -y openssl
+
+# Create app directory
 WORKDIR /app
 
 # Install dependencies
 COPY package*.json ./
 RUN npm install
 
-# Copy source
+# Copy source code
 COPY . .
 
-# Build TypeScript
-RUN npm run build
+# Generate Prisma client for Linux
+RUN npx prisma generate
 
-# ---------- Stage 2: Production ----------
-FROM node:20-slim
-
-ENV NODE_ENV=production
-
-WORKDIR /app
-
-# Reinstall only production dependencies
-COPY package*.json ./
-RUN npm install --omit=dev
-
-# Copy dist folder from builder
-COPY --from=builder /app/dist ./dist
-
-# Use non-root user for security
-RUN addgroup --system app && adduser --system --ingroup app app
-USER app
-
-EXPOSE 3000
-
-CMD ["node", "dist/main.js"]
+# Default command (can be overridden in docker-compose)
+CMD ["npx", "tsx", "src/main.ts"]
